@@ -251,7 +251,7 @@
     .education-card p+p{margin-top:12px}
     .education .skill-pills{margin-top:56px}
 
-    .contact .btn-primary{margin-top:34px}
+    .contact .btn-primary{margin-top:34px}.contact .btn-primary+.btn-primary{margin-left:12px}
     .contact .section-title{font-size:64px}
     footer .footer-row{align-items:flex-start}
     footer .footer-note{max-width:560px;text-align:right}
