@@ -11,9 +11,9 @@
       var anatomyData=[
         ['Electrode','R&D / Pilot','Electrode coating process development — slurry, slot-die coating, and drying, dialing in loading, adhesion, and uniformity at R&D and pilot scale.'],
         ['Separator','R&D / Pilot','Separator evaluation and integration — testing coated separators for lithium-metal and lithium-sulfur cells through R&D and pilot builds.'],
-        ['Cell Assembly','Mass production','High-volume prismatic cell assembly — jelly roll tab welding, top-cap joining, casing insertion, and seam welding; plus laser welding, insulation wrapping, and ultrasonic welding on 24/7 production lines.'],
+        ['Cell Assembly','Mass Production','High-volume prismatic cell assembly — jelly roll tab welding, top-cap joining, casing insertion, and seam welding; plus laser welding, insulation wrapping, and ultrasonic welding on 24/7 production lines.'],
         ['Electrolyte & Activation','R&D / Pilot','At Lyten, electrolyte formulation and cell activation — additive studies, controlled filling, and formation cycling for lithium-metal and lithium-sulfur chemistries.'],
-        ['Module','Mass production','Module and pack manufacturing — cell stacking, robotic assembly, interconnect welding, and busbar welding at production volume.']
+        ['Module','Mass Production','Module and pack manufacturing — cell stacking, robotic assembly, interconnect welding, and busbar welding at production volume.']
       ];
       var activeStage=0;
       var playRetryDelays=[250,500,1000,2000,4000,8000,12000];
@@ -294,8 +294,7 @@
 
       var nav=document.querySelector('.nav'),menu=document.querySelector('.menu-button'),navLinks=document.querySelector('.nav-links');
       menu.addEventListener('click',function(){var open=!navLinks.classList.contains('open');navLinks.classList.toggle('open',open);menu.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation')});
-      navLinks.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){navLinks.classList.remove('open');menu.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation')})});
-      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&navLinks.classList.contains('open')){navLinks.classList.remove('open');menu.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');menu.focus()}});
+      navLinks.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){navLinks.classList.remove('open');menu.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
 
       var ticking=false;
       window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){nav.classList.toggle('compact',window.scrollY>12);anatomyProgress();ticking=false})},{passive:true});
