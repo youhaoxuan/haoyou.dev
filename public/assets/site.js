@@ -293,8 +293,21 @@
       })});
 
       var nav=document.querySelector('.nav'),menu=document.querySelector('.menu-button'),navLinks=document.querySelector('.nav-links');
-      menu.addEventListener('click',function(){var open=!navLinks.classList.contains('open');navLinks.classList.toggle('open',open);menu.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'Close navigation':'Open navigation')});
-      navLinks.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){navLinks.classList.remove('open');menu.classList.remove('open');menu.setAttribute('aria-expanded','false')})});
+      function menuIsOpen(){return navLinks.classList.contains('open')}
+      function openMenu(){navLinks.classList.add('open');menu.classList.add('open');menu.setAttribute('aria-expanded','true');menu.setAttribute('aria-label','Close navigation')}
+      function closeMenu(returnFocus){navLinks.classList.remove('open');menu.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','Open navigation');if(returnFocus)menu.focus()}
+      menu.addEventListener('click',function(){if(menuIsOpen())closeMenu(true);else openMenu()});
+      navLinks.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){closeMenu(false)})});
+      document.addEventListener('keydown',function(e){
+        if(!menuIsOpen())return;
+        if(e.key==='Escape'){closeMenu(true);return}
+        if(e.key==='Tab'){
+          var focusables=[menu].concat(Array.prototype.slice.call(navLinks.querySelectorAll('a[href]')));
+          var first=focusables[0],last=focusables[focusables.length-1];
+          if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+          else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+        }
+      });
 
       var ticking=false;
       window.addEventListener('scroll',function(){if(ticking)return;ticking=true;requestAnimationFrame(function(){nav.classList.toggle('compact',window.scrollY>12);anatomyProgress();ticking=false})},{passive:true});
