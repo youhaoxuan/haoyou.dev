@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://haoyou.dev/sitemap.xml
