@@ -8,6 +8,8 @@
       var playbackState=new WeakMap();
       var anatomy=document.querySelector('.anatomy-scroll');
       var anatomyVideos=Array.prototype.slice.call(document.querySelectorAll('.anatomy-layer video'));
+      var stackedAnatomyMq=window.matchMedia('(max-width: 800px), (max-height: 560px) and (pointer: coarse)');
+      var stackedAnatomy=stackedAnatomyMq.matches;
       var anatomyData=[
         ['Electrode','R&D / Pilot','Electrode coating process development — slurry, slot-die coating, and drying, dialing in loading, adhesion, and uniformity at R&D and pilot scale.'],
         ['Separator','R&D / Pilot','Separator evaluation and integration — testing coated separators for lithium-metal and lithium-sulfur cells through R&D and pilot builds.'],
@@ -120,6 +122,9 @@
       }
       managedVideos.forEach(function(video){
         prepareVideo(video);
+        video.muted=true;
+        video.defaultMuted=true;
+        video.playsInline=true;
         var source=videoSource(video);
         if(source)videoSources.set(video,source);
         playbackState.set(video,newPlaybackState(video));
@@ -247,7 +252,7 @@
           if(entry.isIntersecting){loadVideo(video);safePlay(video,0)}else{pauseVideo(video,true)}
         });
       },{rootMargin:'200px 0px 200px 0px',threshold:0});
-      document.querySelectorAll('.hero-media,.journey-chapter').forEach(function(frame){frameObserver.observe(frame)});
+      document.querySelectorAll('.hero-media,.journey-chapter,.static-stage').forEach(function(frame){frameObserver.observe(frame)});
 
       var anatomyObserver=new IntersectionObserver(function(entries){
         entries.forEach(function(entry){
@@ -259,7 +264,7 @@
           });
         });
       },{rootMargin:'200px 0px 200px 0px',threshold:0});
-      if(anatomy){anatomyObserver.observe(anatomy);}
+      if(anatomy&&!stackedAnatomy){anatomyObserver.observe(anatomy);}
 
       function setStage(index){
         index=Math.max(0,Math.min(4,index));
@@ -271,14 +276,14 @@
         document.querySelector('.anatomy-copy p').textContent=anatomyData[index][2];
         document.querySelectorAll('.step-button').forEach(function(button,i){button.classList.toggle('active',i===index);button.setAttribute('aria-current',i===index?'step':'false')});
         anatomyVideos.forEach(function(video,i){
-          var shouldLoad=anatomy.dataset.inView==='true'&&i===index;
+          var shouldLoad=!stackedAnatomy&&anatomy.dataset.inView==='true'&&i===index;
           video.dataset.inView=shouldLoad?'true':'false';
           stateFor(video).visibilityPaused=!shouldLoad;
           if(shouldLoad){loadVideo(video);safePlay(video,0)}else pauseVideo(video,true);
         });
       }
       function anatomyProgress(){
-        if(!anatomy||reduced)return;
+        if(!anatomy||reduced||stackedAnatomy)return;
         var rect=anatomy.getBoundingClientRect();
         var distance=anatomy.offsetHeight-window.innerHeight;
         if(rect.top<=0&&rect.bottom>=window.innerHeight){
@@ -320,6 +325,19 @@
         var countObserver=new IntersectionObserver(function(entries,watcher){entries.forEach(function(entry){if(!entry.isIntersecting)return;var el=entry.target,end=parseFloat(el.dataset.value),prefix=el.dataset.prefix||'',suffix=el.dataset.suffix||'',start=performance.now();function frame(now){var p=Math.min(1,(now-start)/1200),ease=1-Math.pow(1-p,3),value=end%1?(end*ease).toFixed(2):Math.round(end*ease);el.textContent=prefix+value+suffix;if(p<1)requestAnimationFrame(frame)}requestAnimationFrame(frame);watcher.unobserve(el)})},{threshold:.5});
         document.querySelectorAll('.metric-number').forEach(function(el){countObserver.observe(el)});
       }
+      function applyAnatomyMode(){
+        stackedAnatomy=stackedAnatomyMq.matches;
+        if(stackedAnatomy){
+          anatomyVideos.forEach(function(video){video.preload='none';pauseVideo(video,true)});
+        }else if(anatomy){
+          anatomyVideos.forEach(function(video){video.preload='metadata'});
+          anatomyObserver.observe(anatomy);
+          setStage(activeStage);
+          anatomyProgress();
+        }
+      }
+      if(typeof stackedAnatomyMq.addEventListener==='function')stackedAnatomyMq.addEventListener('change',applyAnatomyMode);
+      if(stackedAnatomy)anatomyVideos.forEach(function(video){video.preload='none'});
       if(anatomy){setStage(0);anatomyProgress();}
     }());
   

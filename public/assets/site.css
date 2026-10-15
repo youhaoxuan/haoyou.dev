@@ -60,7 +60,7 @@
     .video-fallback video.is-playing{opacity:1}
 
     .hero{position:relative;min-height:100svh;display:grid;align-items:end;overflow:hidden;background:#000;color:#fff}
-    .hero-media{position:absolute;inset:0;background-image:url("/media/hero-poster.7c458035.jpg")}
+    .hero-media{position:absolute;inset:0;background-image:url("/media/hero-poster.5fdd047c.jpg")}
     .hero-media::before{background:linear-gradient(180deg,rgba(0,0,0,.16),rgba(0,0,0,.08) 35%,rgba(0,0,0,.84)),linear-gradient(90deg,rgba(0,0,0,.55),transparent 70%)}
     .hero-content{position:relative;z-index:2;padding:clamp(160px,23vh,230px) 0 clamp(82px,12vh,124px)}
     .hero-kicker{margin:0 0 20px;font-size:12px;font-weight:600;line-height:1.25;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.72)}
@@ -154,9 +154,6 @@
       .journey-copy{width:calc(100% - 34px);padding:100px 0 38px}
       .journey-chapter:nth-of-type(even) .journey-copy{text-align:left}.journey-chapter:nth-of-type(even) .journey-copy>div{margin-left:0}
       .journey-copy h3{font-size:48px}
-      .anatomy-scroll{height:auto}
-      .anatomy-pin{display:none}
-      .anatomy-static{display:block;background:#000}
       .anatomy-ui{width:calc(100% - 34px);padding:72px 0 18px}
       .anatomy-scrim{margin-inline:-17px;padding:84px 17px max(22px,calc(16px + env(safe-area-inset-bottom)))}
       .anatomy-copy h2{font-size:36px}
@@ -166,6 +163,22 @@
       .section-head{grid-template-columns:1fr;gap:22px;margin-bottom:52px}
       .metric-grid{grid-template-columns:repeat(2,1fr)}
       .metric:not(:nth-child(3n+1)){border-left:0}.metric:nth-child(even){border-left:1px solid var(--line)}
+    }
+    /* Stacked anatomy layout: portrait phones (<=800px wide) and landscape
+       phones (short viewport + coarse pointer). Genuine desktop windows —
+       fine pointer — keep the pinned scroll layout at any size. */
+    @media(max-width:800px),(max-height:560px) and (pointer:coarse){
+      .anatomy-scroll{height:auto}
+      .anatomy-pin{display:none}
+      .anatomy-static{display:block;background:#000}
+      .static-stage{min-height:100svh}
+    }
+    /* Home hero on portrait phones: the 16:9 frame is cover-cropped to a
+       centre slice, which cuts both robot arms. Shift the focal point to
+       62% so the robot arm (and the AGV in its scenes) stays in frame. */
+    @media(max-width:800px) and (orientation:portrait){
+      .hero-media{background-position:62% 50%}
+      .hero-media video{object-position:62% 50%}
     }
     @media(max-width:390px){
       .nav-inner{justify-content:flex-end}
