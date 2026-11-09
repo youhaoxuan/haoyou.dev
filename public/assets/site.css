@@ -240,6 +240,18 @@
     .tag-list span{padding:7px 11px;border-radius:var(--radius-pill);background:var(--alt);color:var(--ink);font-size:12px;line-height:1.25}
     .figure-caption{margin:auto 0 0;padding-top:30px;font-size:12px;line-height:1.5;color:var(--muted)}
 
+    .preview{padding:var(--section-pad) 0;background:var(--alt)}
+    .preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+    .preview-card{display:flex;flex-direction:column;overflow:hidden;text-decoration:none;color:var(--ink)}
+    .preview-card:hover .preview-title{text-decoration:underline;text-underline-offset:3px}
+    .preview-media{display:block;aspect-ratio:16/9;overflow:hidden;background:var(--alt)}
+    .preview-media img{width:100%;height:100%;object-fit:cover}
+    .preview-copy{display:block;padding:26px 28px 30px}
+    .preview-meta{display:block;font-size:12px;font-weight:600;line-height:1.3;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .preview-title{display:block;margin-top:14px;font-size:28px;font-weight:600;line-height:1.14;letter-spacing:-.02em}
+    .preview-text{display:block;margin-top:12px;color:var(--ink)}
+    .preview-more{margin:34px 0 0}
+
     .experience{padding:var(--section-pad) 0;background:var(--page)}
     .experience-list{border-top:1px solid var(--line)}
     .employer-entry{display:grid;grid-template-columns:minmax(250px,.7fr) minmax(0,1.3fr);gap:54px;padding:38px 0;border-bottom:1px solid var(--line)}
@@ -277,11 +289,11 @@
     footer .footer-note{max-width:560px;text-align:right}
 
     @media(max-width:800px){
-      .about,.projects,.experience,.library,.education{padding:var(--section-pad-mobile) 0}
+      .about,.projects,.preview,.experience,.library,.education{padding:var(--section-pad-mobile) 0}
       .about-intro{grid-template-columns:1fr;gap:46px}
       .portrait{width:min(72vw,340px)}
       .about-thesis{grid-template-columns:1fr;gap:20px;margin-top:54px}
-      .capabilities,.project-grid,.education-grid{grid-template-columns:1fr}
+      .capabilities,.project-grid,.preview-grid,.education-grid{grid-template-columns:1fr}
       .employer-entry{grid-template-columns:1fr;gap:24px}
       .citation{grid-template-columns:1fr;gap:12px}
       .contact .section-title{font-size:clamp(42px,12vw,56px)}
@@ -297,6 +309,8 @@
       .about-thesis strong{font-size:28px}
       .capability,.project-card,.education-card{padding:26px}
       .project-card h3{font-size:26px}
+      .preview-copy{padding:22px 22px 26px}
+      .preview-title{font-size:26px}
       footer .footer-note{text-align:left}
     }
     @media(prefers-color-scheme:dark){
